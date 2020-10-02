@@ -5,6 +5,7 @@ interface IProduct {
   title: string;
   price: string;
   image: string;
+  amount: number;
 };
 
 export const cartState = atom<IProduct[]>({

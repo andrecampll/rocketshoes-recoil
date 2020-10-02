@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { productsListState } from '../../atoms/products';
 import { cartState } from '../../atoms/cart';
-import { useSelector, useDispatch } from 'react-redux';
+import { productAmount } from '../../atoms/cart/selectors/productAmount';
+import { useDispatch } from 'react-redux';
 import { MdAddShoppingCart } from 'react-icons/md';
 import Loader from 'react-loader-spinner';
 import api from '../../services/api';
@@ -25,13 +26,7 @@ export default function Home() {
 
   // const products = useSelector(state => state.products);
 
-  const amount = useSelector(state =>
-    state.cart.reduce((sumAmount, product) => {
-      sumAmount[product.id] = product.amount;
-
-      return sumAmount;
-    }, {})
-  );
+  const amount = useRecoilValue(productAmount);
 
   const dispatch = useDispatch();
 
@@ -55,6 +50,7 @@ export default function Home() {
   const handleAddProduct = useCallback(async (id) => {
     // dispatch(CartActions.addToCartRequest(id));
     const response = await api.get(`products/${id}`);
+
     setCart((oldCartList) => [
       ...oldCartList, response.data
     ]);
@@ -85,7 +81,7 @@ export default function Home() {
                 ) : (
                   <div>
                     <MdAddShoppingCart size={16} color="#FFF" />
-                    {amount[product.id] || 0}
+                    {amount || 0}
                   </div>
                 )}
 

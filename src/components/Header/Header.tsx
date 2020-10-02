@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { MdShoppingCart } from 'react-icons/md';
 
 import { Container, Cart } from './Header_Styles';
 import logo from '../../assets/images/logo.svg';
 import { useRecoilValue } from 'recoil';
-import { cartState } from '../../atoms/cart';
+import { cartAmount } from '../../atoms/cart/selectors/cartAmount';
 
 export default function Header() {
-  const cart = useRecoilValue(cartState);
-
-  const cartSize = cart.length;
+  const cartSize = useRecoilValue(cartAmount);
 
   return (
     <Container>

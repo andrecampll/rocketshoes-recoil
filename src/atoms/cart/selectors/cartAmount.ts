@@ -2,11 +2,11 @@ import { selector } from 'recoil';
 
 import { cartState } from '../index';
 
-export const addProductState = selector({
-  key: 'addProductState',
+export const cartAmount = selector({
+  key: 'cartAmount',
   get: ({ get }) => {
     const cart = get(cartState);
 
-    console.log(cart);
+    return cart.length;
   }
 })
