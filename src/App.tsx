@@ -11,7 +11,7 @@ import './config/ReactotronConfig';
 import store from './store';
 import history from './services/history';
 
-function App() {
+const App: React.FC = () => {
   return (
     <Provider store={store}>
       <Router history={history}>
