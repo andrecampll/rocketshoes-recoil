@@ -1,4 +1,5 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -13,14 +14,16 @@ import history from './services/history';
 
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <Router history={history}>
-        <GlobalStyles />
-        <ToastContainer autoClose={3000} />
-        <Header />
-        <Routes />
-      </Router>
-    </Provider>
+    <RecoilRoot>
+      <Provider store={store}>
+        <Router history={history}>
+          <GlobalStyles />
+          <ToastContainer autoClose={3000} />
+          <Header />
+          <Routes />
+        </Router>
+      </Provider>
+    </RecoilRoot>
   );
 }
 
