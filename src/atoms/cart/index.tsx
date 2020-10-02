@@ -1,6 +1,13 @@
 import { atom } from 'recoil';
 
-export const cartState = atom({
+interface IProduct {
+  id: number;
+  title: string;
+  price: string;
+  image: string;
+};
+
+export const cartState = atom<IProduct[]>({
   key: 'cartState',
   default: [],
 });

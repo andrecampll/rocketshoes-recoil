@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { productsListState } from '../../atoms/products';
+import { cartState } from '../../atoms/cart';
 import { useSelector, useDispatch } from 'react-redux';
 import { MdAddShoppingCart } from 'react-icons/md';
 import Loader from 'react-loader-spinner';
-import * as CartActions from '../../store/modules/cart/actions';
-import * as ProductActions from '../../store/modules/products/actions';
 import api from '../../services/api';
 import { formatPrice } from '../../utils/format';
 import GridPlaceholder from '../../components/GridPlaceholder/GridPlaceholder';
@@ -14,12 +15,15 @@ export default function Home() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
+  const [products, setProducts] = useRecoilState(productsListState);
+  const setCart = useSetRecoilState(cartState);
+
   const toggleModal = useCallback((id) => {
     setIsOpenModal(!isOpenModal);
     setSelectedProductId(id);
   }, [isOpenModal]);
 
-  const products = useSelector(state => state.products);
+  // const products = useSelector(state => state.products);
 
   const amount = useSelector(state =>
     state.cart.reduce((sumAmount, product) => {
@@ -41,15 +45,20 @@ export default function Home() {
         loading: false,
       }));
 
-      dispatch(ProductActions.storeProducts(data));
+      // dispatch(ProductActions.storeProducts(data));
+      setProducts(data);
     }
 
     loadProducts();
-  }, [dispatch]);
+  }, [dispatch, setProducts]);
 
-  const handleAddProduct = useCallback((id) => {
-    dispatch(CartActions.addToCartRequest(id));
-  }, [dispatch]);
+  const handleAddProduct = useCallback(async (id) => {
+    // dispatch(CartActions.addToCartRequest(id));
+    const response = await api.get(`products/${id}`);
+    setCart((oldCartList) => [
+      ...oldCartList, response.data
+    ]);
+  }, [setCart]);
 
   return (
     <ProductList>
